@@ -3,6 +3,7 @@ Main application module.
 This module contains the FastAPI application instance and route definitions.
 """
 
+import os
 import logging
 from typing import Dict, Any, List
 from fastapi import FastAPI, HTTPException
@@ -24,9 +25,14 @@ app = FastAPI(
 )
 
 # Configure CORS
+allowed_origins = [
+    "http://localhost:3000",  # 本地开发
+    "https://test-read-db-and-summarize.vercel.app",  # Vercel 生产环境
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with specific origins
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
