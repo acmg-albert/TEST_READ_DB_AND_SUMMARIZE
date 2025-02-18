@@ -78,9 +78,14 @@ def get_locations_by_type(location_type: str) -> List[Dict[str, str]]:
     Returns:
         List of location names and their types
     """
+    # 获取最新的月份
+    latest_month = db.get_latest_months(1)[0]
+    
+    # 只查询最新月份的数据
     response = db.client.table(db.table_name)\
         .select("location_name")\
         .eq("location_type", location_type)\
+        .eq("year_month", latest_month)\
         .execute()
     
     if not response.data:
