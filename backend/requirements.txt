@@ -7,4 +7,4 @@ pydantic==2.6.1
 sqlalchemy==2.0.25
 python-multipart==0.0.6
 pytest==8.0.0
-httpx==0.26.0 
+httpx>=0.24,<0.26 
