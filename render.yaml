@@ -9,7 +9,5 @@ services:
         sync: false
       - key: SUPABASE_KEY
         sync: false
-      - key: PORT
-        value: 10000
       - key: DEBUG
         value: false 
