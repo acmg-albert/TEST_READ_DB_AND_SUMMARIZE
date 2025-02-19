@@ -3,15 +3,13 @@ services:
     name: test-read-db-and-summarize-backend
     env: python
     buildCommand: pip install -r backend/requirements.txt
-    startCommand: cd backend && python run.py
+    startCommand: cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: SUPABASE_URL
         sync: false
       - key: SUPABASE_KEY
         sync: false
-      - key: API_HOST
-        value: 0.0.0.0
-      - key: API_PORT
+      - key: PORT
         value: 10000
       - key: DEBUG
         value: false 
