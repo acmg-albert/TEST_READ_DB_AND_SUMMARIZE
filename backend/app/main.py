@@ -113,4 +113,4 @@ async def get_locations(location_type: str):
         raise
     except Exception as e:
         logger.error(f"Error fetching locations: {e}", exc_info=True)
-        raise HTTPException(status_code=500, detail=str(e)) 
+        raise HTTPException(status_code=500, detail=str(e))
