@@ -7,17 +7,19 @@ export interface RentData {
 export interface LocationData {
     location_name: string;
     location_type: string;
-    trailing_3m_yoy_change: number;
-    valid_months_count: number;
-    monthly_data: {
+    trailing_3m_yoy_change?: number;
+    valid_months_count?: number;
+    monthly_data?: Array<{
         date: string;
         overall: number;
         '1br': number;
         '2br': number;
-        year_ago_overall: number;
-        year_ago_1br: number;
-        year_ago_2br: number;
-    }[];
+        year_ago_overall?: number;
+        year_ago_1br?: number;
+        year_ago_2br?: number;
+    }>;
+    time_series?: TimeSeriesData;
+    error?: string;
 }
 
 export interface SummaryData {
@@ -38,16 +40,16 @@ export interface SummaryData {
 export interface TimeSeriesData {
     dates: string[];
     overall: {
-        values: (number | null)[];
-        yoy_changes: (number | null)[];
+        values: number[];
+        yoy_changes: number[];
     };
     '1br': {
-        values: (number | null)[];
-        yoy_changes: (number | null)[];
+        values: number[];
+        yoy_changes: number[];
     };
     '2br': {
-        values: (number | null)[];
-        yoy_changes: (number | null)[];
+        values: number[];
+        yoy_changes: number[];
     };
 }
 

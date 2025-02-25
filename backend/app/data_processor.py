@@ -4,7 +4,10 @@ Handles data aggregation and calculations for the API endpoints.
 """
 
 from typing import List, Dict, Any, Tuple
-from .database import db
+from .database import DatabaseClient
+
+# 初始化数据库客户端
+db = DatabaseClient()
 
 def get_summary_data() -> Dict[str, Any]:
     """
@@ -54,6 +57,24 @@ def get_location_details(location_type: str, location_name: str) -> Dict[str, An
     time_series = db.get_location_time_series(location_type, location_name)
     
     if not time_series:
+        # 尝试获取基本数据
+        locations = db.get_location_data(location_type)
+        location_data = next((loc for loc in locations if loc["location_name"] == location_name), None)
+        
+        if location_data:
+            return {
+                "location_type": location_type,
+                "location_name": location_name,
+                "trailing_3m_yoy_change": location_data.get("trailing_3m_yoy_change", 0),
+                "valid_months_count": location_data.get("valid_months_count", 0),
+                "monthly_data": location_data.get("monthly_data", []),
+                "time_series": {
+                    "dates": [],
+                    "overall": {"values": [], "yoy_changes": []},
+                    "1br": {"values": [], "yoy_changes": []},
+                    "2br": {"values": [], "yoy_changes": []}
+                }
+            }
         return {
             "error": f"No data found for {location_type} {location_name}"
         }

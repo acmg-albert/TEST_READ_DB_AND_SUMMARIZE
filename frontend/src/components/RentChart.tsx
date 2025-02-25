@@ -20,6 +20,7 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
         const changes = timeSeriesData[rentType].yoy_changes.slice(startIndex, endIndex + 1);
         
         return {
+            backgroundColor: '#F5F7FA',
             title: {
                 text: title,
                 left: 'center'
@@ -48,18 +49,44 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
             grid: {
                 right: '15%',
                 left: '12%',
-                backgroundColor: 'rgba(211, 211, 211, 0.1)',
-                show: true,
-                borderColor: 'transparent'
+                top: '15%',
+                bottom: '15%',
+                backgroundColor: '#F5F7FA',
+                containLabel: true
             },
             legend: {
-                data: ['Rent', 'YoY Change'],
+                data: [
+                    'Rent',
+                    {
+                        name: 'YoY Change',
+                        icon: 'rect',
+                        itemStyle: {
+                            color: {
+                                type: 'linear',
+                                x: 0,
+                                y: 0,
+                                x2: 1,
+                                y2: 0,
+                                colorStops: [
+                                    {
+                                        offset: 0,
+                                        color: '#4CAF50'
+                                    },
+                                    {
+                                        offset: 1,
+                                        color: '#F44336'
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                ],
                 top: 25
             },
             xAxis: {
                 type: 'category',
                 data: dates,
-                boundaryGap: false,
+                boundaryGap: true,
                 splitLine: {
                     show: false
                 }
@@ -70,8 +97,7 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                     name: 'Rent ($)',
                     position: 'left',
                     axisLabel: {
-                        formatter: '${value}',
-                        align: 'right'
+                        formatter: '${value}'
                     },
                     splitLine: {
                         show: false
@@ -104,7 +130,10 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                     type: 'line',
                     data: values,
                     yAxisIndex: 0,
-                    symbol: 'none',
+                    smooth: true,
+                    itemStyle: {
+                        color: '#2196F3'
+                    },
                     lineStyle: {
                         width: 3
                     }
@@ -113,7 +142,12 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                     name: 'YoY Change',
                     type: 'bar',
                     data: changes,
-                    yAxisIndex: 1
+                    yAxisIndex: 1,
+                    itemStyle: {
+                        color: function(params: any) {
+                            return params.value >= 0 ? '#4CAF50' : '#F44336';
+                        }
+                    }
                 }
             ]
         };

@@ -17,26 +17,34 @@ interface DataTableProps {
     title: string;
     topLocations: LocationData[];
     bottomLocations: LocationData[];
+    locationType: string;
 }
 
-export const DataTable: React.FC<DataTableProps> = ({ title, topLocations, bottomLocations }) => {
+export const DataTable: React.FC<DataTableProps> = ({ title, topLocations, bottomLocations, locationType }) => {
     const navigate = useNavigate();
 
     const handleLocationClick = (location: LocationData) => {
-        navigate(`/location/${location.location_type}/${location.location_name}`);
+        navigate(`/rental/apartments-rent/${locationType}/${location.location_name}`);
     };
 
-    const formatPercent = (value: number) => {
+    const formatPercent = (value: number | undefined) => {
+        if (typeof value !== 'number') return 'N/A';
         return `${value.toFixed(2)}%`;
     };
 
-    const formatPrice = (value: number) => {
+    const formatPrice = (value: number | undefined) => {
+        if (typeof value !== 'number') return 'N/A';
         return `$${value.toLocaleString()}`;
     };
 
     const renderLocationRows = (locations: LocationData[]) => {
         return locations.map((location) => {
-            const latestData = location.monthly_data[0];
+            const latestData = location.monthly_data?.[0] ?? {
+                overall: 0,
+                '1br': 0,
+                '2br': 0
+            };
+            
             return (
                 <TableRow key={location.location_name}>
                     <TableCell>
@@ -67,7 +75,7 @@ export const DataTable: React.FC<DataTableProps> = ({ title, topLocations, botto
                     <TableHead>
                         <TableRow>
                             <TableCell>Location</TableCell>
-                            <TableCell align="right">3M YoY Change</TableCell>
+                            <TableCell align="right">3-Month YoY Change</TableCell>
                             <TableCell align="right">Overall Rent</TableCell>
                             <TableCell align="right">1BR Rent</TableCell>
                             <TableCell align="right">2BR Rent</TableCell>
