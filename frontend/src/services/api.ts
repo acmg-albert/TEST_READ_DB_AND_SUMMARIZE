@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { SummaryData, LocationData } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://192.168.4.26:8000/api';
 
 export interface LocationOption {
     location_type: string;

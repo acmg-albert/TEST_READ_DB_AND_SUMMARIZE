@@ -59,12 +59,12 @@ export const SummaryPage: React.FC = () => {
             <div className="container-fluid header bg-white p-0">
                 <div className="row g-0 align-items-center justify-content-center py-5">
                     <div className="col-md-10 text-center">
-                        <h1 className="display-4 text-primary mb-3">Rent Price Summary</h1>
+                        <h1 className="display-4 text-primary mb-3">Apartments Rent Market Data Summary</h1>
                         <button 
                             className="btn btn-primary py-3 px-5"
                             onClick={() => navigate('/rental/apartments-rent/National/United States')}
                         >
-                            View National Details
+                            View Data by Given Location
                         </button>
                     </div>
                 </div>

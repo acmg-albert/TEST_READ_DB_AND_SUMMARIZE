@@ -27,6 +27,7 @@ app = FastAPI(
 # Configure CORS
 origins = [
     "http://localhost:3000",  # 本地开发
+    "http://192.168.4.26:3000",  # 本地IP访问
     "https://test-read-db-and-summarize.vercel.app",  # Vercel前端域名
     "https://test-read-db-and-summarize-backend.onrender.com",  # Render后端域名
 ]

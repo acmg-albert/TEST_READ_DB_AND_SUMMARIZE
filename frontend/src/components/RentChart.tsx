@@ -57,7 +57,7 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                 right: isMobile ? '8%' : '8%',
                 left: isMobile ? '8%' : '6%',
                 top: isMobile ? '25%' : '20%',
-                bottom: '15%',
+                bottom: isMobile ? '18%' : '20%',
                 backgroundColor: 'transparent',
                 containLabel: true
             },
@@ -167,10 +167,24 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                     xAxisIndex: [0],
                     start: 0,
                     end: 100,
-                    height: isMobile ? 20 : 30,
-                    bottom: isMobile ? 5 : 10,
+                    height: isMobile ? 20 : 25,
+                    bottom: isMobile ? '3%' : '5%',
                     left: isMobile ? '8%' : '6%',
-                    right: isMobile ? '8%' : '8%'
+                    right: isMobile ? '8%' : '8%',
+                    moveHandleSize: 0,
+                    brushSelect: false,
+                    handleIcon: 'M-292,322.2c-3.2,0-6.4-0.6-9.3-1.9c-2.9-1.2-5.4-2.9-7.6-5.1s-3.9-4.8-5.1-7.6c-1.3-3-1.9-6.1-1.9-9.3c0-3.2,0.6-6.4,1.9-9.3c1.2-2.9,2.9-5.4,5.1-7.6s4.8-3.9,7.6-5.1c3-1.3,6.1-1.9,9.3-1.9c3.2,0,6.4,0.6,9.3,1.9c2.9,1.2,5.4,2.9,7.6,5.1s3.9,4.8,5.1,7.6c1.3,3,1.9,6.1,1.9,9.3c0,3.2-0.6,6.4-1.9,9.3c-1.2,2.9-2.9,5.4-5.1,7.6s-4.8,3.9-7.6,5.1C-285.6,321.5-288.8,322.2-292,322.2z',
+                    handleSize: '100%',
+                    handleStyle: {
+                        color: '#fff',
+                        shadowBlur: 3,
+                        shadowColor: 'rgba(0, 0, 0, 0.2)',
+                        shadowOffsetX: 2,
+                        shadowOffsetY: 2
+                    },
+                    textStyle: {
+                        fontSize: isMobile ? 10 : 12
+                    }
                 }
             ],
             series: [
@@ -226,7 +240,7 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
             <ReactECharts
                 option={getOption()}
                 style={{
-                    height: '400px',
+                    height: isMobile ? '450px' : '500px',
                     width: '100%'
                 }}
                 onEvents={{
