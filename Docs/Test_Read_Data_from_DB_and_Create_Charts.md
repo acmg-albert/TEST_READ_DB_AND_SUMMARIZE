@@ -1,7 +1,7 @@
 **测试从Supabase数据库读数据展示交互式Web App数据图表汇总页面**
 
 ## 数据库信息
-汇总后图表曲线背后的数据从Supabase的REAL_ANALYTICS_DB数据库数据表读入，数据库及数据表信息：
+汇总后图表曲线背后的数据从Supabase数据库数据表读入，数据库及数据表信息：
 
 * 数据库: Supabase
 * 数据表: apartment_list_rent_estimates
