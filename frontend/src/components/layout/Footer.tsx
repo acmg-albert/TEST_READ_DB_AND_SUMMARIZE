@@ -1,111 +1,92 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  SimpleGrid,
-  Stack,
-  Text,
-  Input,
-  Button,
-  Link,
-  IconButton,
-  VStack,
-  HStack,
-  Icon,
-} from '@chakra-ui/react';
-import { FaTwitter, FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
-
-// 创建包装后的图标组件
-const EmailIcon = (props: any) => (
-  <Icon as={FaEnvelope} {...props} />
-);
-
-const TwitterIcon = (props: any) => (
-  <Icon as={FaTwitter} {...props} />
-);
-
-const LinkedInIcon = (props: any) => (
-  <Icon as={FaLinkedin} {...props} />
-);
-
-const GitHubIcon = (props: any) => (
-  <Icon as={FaGithub} {...props} />
-);
+import { Link as RouterLink } from 'react-router-dom';
+import './Footer.css';
 
 const Footer: React.FC = () => {
   return (
-    <Box bg="gray.50" color="gray.700" mt="auto">
-      <Container as={Stack} maxW="1200px" py={10}>
-        <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={8}>
+    <div className="container-fluid bg-dark text-white-50 footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+      <div className="container py-5">
+        <div className="row g-5">
           {/* Get In Touch Section */}
-          <Stack spacing={6}>
-            <Text fontSize="lg" fontWeight="bold">Get In Touch</Text>
-            <Stack spacing={4}>
-              <HStack>
-                <EmailIcon />
-                <Text>contact@example.com</Text>
-              </HStack>
-              <HStack spacing={4}>
-                <IconButton
-                  aria-label="Twitter"
-                  icon={<TwitterIcon />}
-                  size="sm"
-                  variant="ghost"
-                  colorScheme="blue"
-                />
-                <IconButton
-                  aria-label="LinkedIn"
-                  icon={<LinkedInIcon />}
-                  size="sm"
-                  variant="ghost"
-                  colorScheme="blue"
-                />
-                <IconButton
-                  aria-label="GitHub"
-                  icon={<GitHubIcon />}
-                  size="sm"
-                  variant="ghost"
-                  colorScheme="blue"
-                />
-              </HStack>
-            </Stack>
-          </Stack>
+          <div className="col-lg-3 col-md-6">
+            <h5 className="text-white mb-4">Get In Touch</h5>
+            <p className="mb-2"><i className="fa fa-map-marker-alt me-3"></i>123 Street, New York, USA</p>
+            <p className="mb-2"><i className="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+            <p className="mb-2"><i className="fa fa-envelope me-3"></i>info@example.com</p>
+            <div className="d-flex pt-2">
+              <a className="btn btn-outline-light btn-social" href="#"><i className="fab fa-twitter"></i></a>
+              <a className="btn btn-outline-light btn-social" href="#"><i className="fab fa-facebook-f"></i></a>
+              <a className="btn btn-outline-light btn-social" href="#"><i className="fab fa-youtube"></i></a>
+              <a className="btn btn-outline-light btn-social" href="#"><i className="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
 
           {/* Quick Links Section */}
-          <Stack spacing={6}>
-            <Text fontSize="lg" fontWeight="bold">Quick Links</Text>
-            <Stack spacing={2}>
-              <Link href="/" color="gray.600" _hover={{ color: 'blue.500' }}>Home</Link>
-              <Link href="/about" color="gray.600" _hover={{ color: 'blue.500' }}>About Us</Link>
-              <Link href="/terms" color="gray.600" _hover={{ color: 'blue.500' }}>Terms & Conditions</Link>
-              <Text color="gray.400">(Others To Be Constructed)</Text>
-            </Stack>
-          </Stack>
+          <div className="col-lg-3 col-md-6">
+            <h5 className="text-white mb-4">Quick Links</h5>
+            <RouterLink to="/" className="btn btn-link text-white-50">Home</RouterLink>
+            <RouterLink to="/about" className="btn btn-link text-white-50">About Us</RouterLink>
+            <RouterLink to="/rental/apartments-rent" className="btn btn-link text-white-50">Rental Market</RouterLink>
+            <RouterLink to="/sales-market" className="btn btn-link text-white-50">Sales Market</RouterLink>
+            <RouterLink to="/affordability" className="btn btn-link text-white-50">Affordability</RouterLink>
+          </div>
+
+          {/* Photo Gallery Section */}
+          <div className="col-lg-3 col-md-6">
+            <h5 className="text-white mb-4">Photo Gallery</h5>
+            <div className="row g-2 pt-2">
+              <div className="col-4">
+                <img className="img-fluid rounded bg-light p-1" src="/img/property-1.jpg" alt="" />
+              </div>
+              <div className="col-4">
+                <img className="img-fluid rounded bg-light p-1" src="/img/property-2.jpg" alt="" />
+              </div>
+              <div className="col-4">
+                <img className="img-fluid rounded bg-light p-1" src="/img/property-3.jpg" alt="" />
+              </div>
+              <div className="col-4">
+                <img className="img-fluid rounded bg-light p-1" src="/img/property-4.jpg" alt="" />
+              </div>
+              <div className="col-4">
+                <img className="img-fluid rounded bg-light p-1" src="/img/property-5.jpg" alt="" />
+              </div>
+              <div className="col-4">
+                <img className="img-fluid rounded bg-light p-1" src="/img/property-6.jpg" alt="" />
+              </div>
+            </div>
+          </div>
 
           {/* Newsletter Section */}
-          <Stack spacing={6}>
-            <Text fontSize="lg" fontWeight="bold">Newsletter</Text>
-            <VStack spacing={4}>
-              <Input
-                placeholder="Enter your email"
-                bg="white"
-                border={1}
-                borderColor="gray.200"
-                _hover={{
-                  borderColor: 'gray.300',
-                }}
-              />
-              <Button
-                w="100%"
-                colorScheme="blue"
-              >
-                Sign Up
-              </Button>
-            </VStack>
-          </Stack>
-        </SimpleGrid>
-      </Container>
-    </Box>
+          <div className="col-lg-3 col-md-6">
+            <h5 className="text-white mb-4">Newsletter</h5>
+            <p>Subscribe to our newsletter to receive the latest updates and news.</p>
+            <div className="position-relative mx-auto" style={{ maxWidth: '400px' }}>
+              <input className="form-control bg-transparent w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email" />
+              <button type="button" className="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Sign Up</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Copyright Section */}
+      <div className="container">
+        <div className="copyright">
+          <div className="row">
+            <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
+              &copy; <a className="border-bottom" href="#">Real Estate Market Data</a>, All Right Reserved.
+            </div>
+            <div className="col-md-6 text-center text-md-end">
+              <div className="footer-menu">
+                <RouterLink to="/">Home</RouterLink>
+                <RouterLink to="/about">About</RouterLink>
+                <RouterLink to="/help">Help</RouterLink>
+                <RouterLink to="/faq">FAQs</RouterLink>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

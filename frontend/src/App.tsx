@@ -7,6 +7,7 @@ import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import Layout from './components/layout/Layout';
 import theme from './theme';
 import styledTheme from './theme/styled';
+import './styles/global.css';  // 导入全局样式
 
 // 导入现有的租金数据页面
 import { SummaryPage as RentSummary } from './pages/RentalMarket/RentSummary';
@@ -17,15 +18,15 @@ const muiTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#2196F3',
-      light: '#64B5F6',
-      dark: '#1976D2',
+      main: '#0AB3B0',
+      light: '#81D8D0',
+      dark: '#006D6B',
       contrastText: '#fff',
     },
     secondary: {
-      main: '#f50057',
-      light: '#ff4081',
-      dark: '#c51162',
+      main: '#81D8D0',
+      light: '#E0F5F4',
+      dark: '#0AB3B0',
       contrastText: '#fff',
     },
     error: {
@@ -41,9 +42,9 @@ const muiTheme = createTheme({
       contrastText: 'rgba(0, 0, 0, 0.87)',
     },
     info: {
-      main: '#2196f3',
-      light: '#64b5f6',
-      dark: '#1976d2',
+      main: '#0AB3B0',
+      light: '#81D8D0',
+      dark: '#006D6B',
       contrastText: '#fff',
     },
     success: {
@@ -52,6 +53,10 @@ const muiTheme = createTheme({
       dark: '#388e3c',
       contrastText: 'rgba(0, 0, 0, 0.87)',
     },
+    text: {
+      primary: '#666565',
+      secondary: '#757575',
+    },
     background: {
       paper: '#fff',
       default: '#fafafa',
@@ -59,6 +64,7 @@ const muiTheme = createTheme({
   },
   typography: {
     fontFamily: [
+      'Heebo',
       '-apple-system',
       'BlinkMacSystemFont',
       '"Segoe UI"',
@@ -67,12 +73,51 @@ const muiTheme = createTheme({
       'Arial',
       'sans-serif',
     ].join(','),
+    h1: {
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 800,
+    },
+    h2: {
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 700,
+    },
+    h3: {
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 700,
+    },
+    h4: {
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 600,
+    },
+    h5: {
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 600,
+    },
+    h6: {
+      fontFamily: 'Inter, sans-serif',
+      fontWeight: 600,
+    },
+    body1: {
+      color: '#666565',
+    },
+    body2: {
+      color: '#666565',
+    },
   },
   components: {
     MuiCircularProgress: {
       styleOverrides: {
         root: {
-          color: '#2196F3',
+          color: '#0AB3B0',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Heebo, sans-serif',
+          fontWeight: 500,
+          transition: '.5s',
         },
       },
     },

@@ -4,7 +4,9 @@ import {
     Autocomplete,
     TextField,
     CircularProgress,
-    Alert
+    Alert,
+    useTheme,
+    useMediaQuery
 } from '@mui/material';
 import { api } from '../services/api';
 
@@ -24,6 +26,8 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
     initialLocationType = 'National',
     initialLocationName = 'United States'
 }) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [locationTypes, setLocationTypes] = useState<string[]>([]);
     const [locations, setLocations] = useState<LocationOption[]>([]);
     const [selectedType, setSelectedType] = useState<string>(initialLocationType);
@@ -94,65 +98,78 @@ export const LocationSelector: React.FC<LocationSelectorProps> = ({
     };
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 3 }}>
+        <Box sx={{ 
+            display: 'flex', 
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: 2, 
+            mb: 3 
+        }}>
             {error && (
                 <Alert severity="error" sx={{ mb: 2 }}>
                     {error}
                 </Alert>
             )}
             
-            <Box sx={{ display: 'flex', gap: 2 }}>
-                <Autocomplete
-                    value={selectedType}
-                    onChange={handleTypeChange}
-                    options={locationTypes}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Location Type"
-                            variant="outlined"
-                            error={!!error}
-                        />
-                    )}
-                    sx={{ minWidth: 200 }}
-                    disabled={loading && !locationTypes.length}
-                />
-
-                <Autocomplete
-                    value={selectedLocation}
-                    onChange={handleLocationChange}
-                    options={locations}
-                    getOptionLabel={(option: LocationOption) => option.location_name}
-                    isOptionEqualToValue={(option, value) => 
-                        option.location_name === value.location_name
+            <Autocomplete
+                value={selectedType}
+                onChange={handleTypeChange}
+                options={locationTypes}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Location Type"
+                        variant="outlined"
+                        error={!!error}
+                    />
+                )}
+                sx={{ 
+                    minWidth: isMobile ? '100%' : 200,
+                    '& .MuiOutlinedInput-root': {
+                        fontSize: isMobile ? '0.875rem' : '1rem'
                     }
-                    renderOption={(props, option) => (
-                        <li {...props} key={`${option.location_type}-${option.location_name}`}>
-                            {option.location_name}
-                        </li>
-                    )}
-                    loading={loading}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Location"
-                            variant="outlined"
-                            error={!!error}
-                            InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                    <>
-                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                        {params.InputProps.endAdornment}
-                                    </>
-                                ),
-                            }}
-                        />
-                    )}
-                    sx={{ minWidth: 300 }}
-                    disabled={!selectedType || loading}
-                />
-            </Box>
+                }}
+                disabled={loading && !locationTypes.length}
+            />
+
+            <Autocomplete
+                value={selectedLocation}
+                onChange={handleLocationChange}
+                options={locations}
+                getOptionLabel={(option: LocationOption) => option.location_name}
+                isOptionEqualToValue={(option, value) => 
+                    option.location_name === value.location_name
+                }
+                renderOption={(props, option) => (
+                    <li {...props} key={`${option.location_type}-${option.location_name}`}>
+                        {option.location_name}
+                    </li>
+                )}
+                loading={loading}
+                renderInput={(params) => (
+                    <TextField
+                        {...params}
+                        label="Location"
+                        variant="outlined"
+                        error={!!error}
+                        InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                                <>
+                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.InputProps.endAdornment}
+                                </>
+                            ),
+                        }}
+                    />
+                )}
+                sx={{ 
+                    minWidth: isMobile ? '100%' : 300,
+                    '& .MuiOutlinedInput-root': {
+                        fontSize: isMobile ? '0.875rem' : '1rem'
+                    }
+                }}
+                disabled={!selectedType || loading}
+            />
         </Box>
     );
 };

@@ -1,63 +1,57 @@
 import React from 'react';
-import { Box, Flex, Image, Link, Menu, MenuButton, MenuList, MenuItem, Button } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Image } from '@chakra-ui/react';
 
 const Header: React.FC = () => {
   return (
-    <Box as="header" bg="white" boxShadow="sm" position="fixed" width="100%" zIndex="1000" top="0">
-      <Flex maxW="1200px" mx="auto" px={4} py={4} align="center" justify="space-between">
-        {/* Logo */}
-        <Box>
-          <Link href="/">
-            <Image src="/logo.png" alt="Logo" h="40px" />
-          </Link>
-        </Box>
-
-        {/* Navigation */}
-        <Flex align="center" gap={6}>
-          <Link href="/" color="gray.600" _hover={{ color: 'blue.500' }}>
-            Home
-            <Box as="span" ml={1} color="gray.400" fontSize="sm">(To Be Constructed)</Box>
-          </Link>
-
-          <Menu>
-            <MenuButton as={Button} variant="ghost" color="gray.600" _hover={{ color: 'blue.500' }}>
-              Sales Market
-              <Box as="span" ml={1} color="gray.400" fontSize="sm">(To Be Constructed)</Box>
-            </MenuButton>
-          </Menu>
-
-          <Menu>
-            <MenuButton as={Button} variant="ghost" color="gray.600" _hover={{ color: 'blue.500' }}>
-              Rental Market
-            </MenuButton>
-            <MenuList>
-              <MenuItem as={Link} href="/rental/apartments-rent">Apartments Rent</MenuItem>
-              <MenuItem as={Link} href="/rental/apartments-vacancy">Apartments Vacancy</MenuItem>
-              <MenuItem as={Link} href="/rental/time-on-market">
-                Apartments Time on Market
-                <Box as="span" ml={1} color="gray.400" fontSize="sm">(To Be Constructed)</Box>
-              </MenuItem>
-              <MenuItem>
-                Others
-                <Box as="span" ml={1} color="gray.400" fontSize="sm">(To Be Constructed)</Box>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-
-          <Menu>
-            <MenuButton as={Button} variant="ghost" color="gray.600" _hover={{ color: 'blue.500' }}>
-              Affordability
-              <Box as="span" ml={1} color="gray.400" fontSize="sm">(To Be Constructed)</Box>
-            </MenuButton>
-          </Menu>
-
-          <Link href="/about" color="gray.600" _hover={{ color: 'blue.500' }}>
-            About Us
-            <Box as="span" ml={1} color="gray.400" fontSize="sm">(To Be Constructed)</Box>
-          </Link>
-        </Flex>
-      </Flex>
-    </Box>
+    <div className="container-fluid nav-bar bg-transparent">
+      <nav className="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
+        <RouterLink to="/" className="navbar-brand d-flex align-items-center text-center">
+          <div className="icon p-2 me-2">
+            <Image className="img-fluid" src="/img/my-logo.png" alt="My Logo" style={{ width: '30px', height: '30px' }} />
+          </div>
+          <h1 className="m-0 text-primary">My Logo</h1>
+        </RouterLink>
+        
+        <button type="button" className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        
+        <div className="collapse navbar-collapse" id="navbarCollapse">
+          <div className="navbar-nav ms-auto">
+            <RouterLink to="/" className="nav-item nav-link">HOME</RouterLink>
+            
+            <div className="nav-item dropdown">
+              <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">SALES MARKET</a>
+              <div className="dropdown-menu rounded-0 m-0">
+                <span className="dropdown-item">Under Construction</span>
+              </div>
+            </div>
+            
+            <div className="nav-item dropdown">
+              <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">RENTAL MARKET</a>
+              <div className="dropdown-menu rounded-0 m-0">
+                <RouterLink to="/rental/apartments-rent" className="dropdown-item">Apartments Rent</RouterLink>
+                <RouterLink to="/rental/apartments-vacancy" className="dropdown-item">Apartments Vacancy</RouterLink>
+                <RouterLink to="/rental/time-on-market" className="dropdown-item">Apartments Time on Market</RouterLink>
+              </div>
+            </div>
+            
+            <div className="nav-item dropdown">
+              <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">AFFORDABILITY</a>
+              <div className="dropdown-menu rounded-0 m-0">
+                <span className="dropdown-item">Under Construction</span>
+              </div>
+            </div>
+            
+            <RouterLink to="#" className="nav-item nav-link">NEW CONSTRUCTIONS</RouterLink>
+            <RouterLink to="#" className="nav-item nav-link">ABOUT US</RouterLink>
+          </div>
+          
+          <a href="#" className="btn btn-primary px-3 d-none d-lg-flex">Login/Sign up</a>
+        </div>
+      </nav>
+    </div>
   );
 };
 

@@ -83,66 +83,64 @@ export const LocationDetailPage: React.FC = () => {
     }
 
     return (
-        <Box sx={{ p: 3 }}>
-            <Container maxWidth="lg">
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Button
-                            startIcon={<ArrowBackIcon />}
-                            onClick={() => navigate('/rental/apartments-rent')}
-                            variant="contained"
-                            color="primary"
-                        >
-                            Back to Summary
-                        </Button>
-                        <Typography variant="h4" component="h1">
-                            Location Details
-                        </Typography>
-                    </Box>
+        <Container maxWidth="lg">
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Button
+                        startIcon={<ArrowBackIcon />}
+                        onClick={() => navigate('/rental/apartments-rent')}
+                        variant="contained"
+                        color="primary"
+                    >
+                        Back to Summary
+                    </Button>
+                    <Typography variant="h4" component="h1">
+                        Location Details
+                    </Typography>
                 </Box>
+            </Box>
 
-                <LocationSelector
-                    initialLocationType={locationType || 'National'}
-                    initialLocationName={locationName || 'United States'}
-                    onLocationChange={(type, name) => {
-                        navigate(`/rental/apartments-rent/${type}/${name}`);
-                    }}
-                />
+            <LocationSelector
+                initialLocationType={locationType || 'National'}
+                initialLocationName={locationName || 'United States'}
+                onLocationChange={(type, name) => {
+                    navigate(`/rental/apartments-rent/${type}/${name}`);
+                }}
+            />
 
-                {locationData && (
-                    <>
-                        <Typography 
-                            variant="h4" 
-                            gutterBottom 
-                            align="center"
-                            sx={{ 
-                                fontWeight: 'bold',
-                                mb: 3
-                            }}
-                        >
-                            {locationData.location_name} ({locationType})
-                        </Typography>
+            {locationData && (
+                <>
+                    <Typography 
+                        variant="h4" 
+                        gutterBottom 
+                        align="center"
+                        sx={{ 
+                            fontWeight: 'bold',
+                            mb: 3
+                        }}
+                    >
+                        {locationData.location_name} ({locationType})
+                    </Typography>
 
-                        <RentChart
-                            title="Overall Rent Trends"
-                            timeSeriesData={locationData.time_series}
-                            rentType="overall"
-                        />
+                    <RentChart
+                        title="Overall Rent Trends"
+                        timeSeriesData={locationData.time_series}
+                        rentType="overall"
+                    />
 
-                        <RentChart
-                            title="1 Bedroom Rent Trends"
-                            timeSeriesData={locationData.time_series}
-                            rentType="1br"
-                        />
+                    <RentChart
+                        title="1 Bedroom Rent Trends"
+                        timeSeriesData={locationData.time_series}
+                        rentType="1br"
+                    />
 
-                        <RentChart
-                            title="2 Bedroom Rent Trends"
-                            timeSeriesData={locationData.time_series}
-                            rentType="2br"
-                        />
-                    </>
-                )}
-            </Container>
-        </Box>
+                    <RentChart
+                        title="2 Bedroom Rent Trends"
+                        timeSeriesData={locationData.time_series}
+                        rentType="2br"
+                    />
+                </>
+            )}
+        </Container>
     );
 }; 

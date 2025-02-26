@@ -23,3 +23,61 @@
    - 确保服务正常运行后才能进行下一步操作
    - 前端默认端口 3000，如被占用应该换用其他端口
    - 后端默认端口 8000，如被占用应该换用其他端口 
+
+5. 模板改造计划规则
+   - 第一阶段（POC验证）：
+     * 导航栏改造：实现新的导航结构
+     * 颜色系统：从绿色改为深蓝色系
+     * 验证页面：改造 Apartments Rent 页面
+     * 保持现有图表组件的设计和交互不变
+   
+   - 第二阶段：
+     * 完善基础页面（首页等）
+     * 优化移动端适配
+     * 完善预留功能的占位页面
+
+   - 具体改造要求：
+     * 导航栏结构：
+       - 左侧：My Logo
+       - 中间：HOME | SALES MARKET▼ | RENTAL MARKET▼ | AFFORDABILITY▼ | NEW CONSTRUCTIONS | ABOUT US
+       - 右侧：Login/Sign up 按钮
+     * RENTAL MARKET 下拉菜单项：
+       - Apartments Rent
+       - Apartments Vacancy
+       - Apartments Time on Market
+     * 首页内容：暂时显示 "Under Construction"
+     * 保持租金数据页面的图表样式不变
+
+6. 租金模块功能实现逻辑
+   A. 数据流向：
+      - 后端 API 端点：
+        * /api/summary：获取汇总数据
+        * /api/location/{type}/{name}：获取具体地区数据
+        * /api/location-types：获取可用的地区类型
+        * /api/locations/{type}：获取指定类型的所有地区
+
+   B. 组件层级：
+      - RentSummary 页面：
+        * 显示全国租金数据概览
+        * 包含各级别（州、都市圈、城市）的top/bottom表格
+      - RentDetail 页面：
+        * 显示具体地区的详细数据
+        * 包含地区选择器和时间序列图表
+
+   C. 数据处理逻辑：
+      - 地区层级：National > State > Metro > City
+      - 每个地区数据包含：
+        * overall：总体租金
+        * 1br：一居室租金
+        * 2br：二居室租金
+        * trailing_3m_yoy_change：近3个月同比变化
+      
+   D. 关键注意点：
+      - Location选择器的联动关系：
+        * 先选择地区类型（LocationType）
+        * 根据类型加载对应的地区列表
+        * 选择具体地区后更新图表
+      - 时间序列数据的处理：
+        * 使用年月格式（YYYY_MM）
+        * 保持时间顺序
+        * 正确计算同比变化率 

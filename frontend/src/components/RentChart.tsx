@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
+import { Box, Paper, useTheme, useMediaQuery } from '@mui/material';
 import { TimeSeriesData } from '../types';
 
 interface RentChartProps {
@@ -9,6 +10,8 @@ interface RentChartProps {
 }
 
 export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, rentType }) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [timeRange, setTimeRange] = useState<[number, number]>([0, timeSeriesData.dates.length - 1]);
     
     const getOption = () => {
@@ -20,10 +23,14 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
         const changes = timeSeriesData[rentType].yoy_changes.slice(startIndex, endIndex + 1);
         
         return {
-            backgroundColor: '#F5F7FA',
+            backgroundColor: 'transparent',
             title: {
                 text: title,
-                left: 'center'
+                left: 'center',
+                top: isMobile ? 0 : 10,
+                textStyle: {
+                    fontSize: isMobile ? 14 : 16
+                }
             },
             tooltip: {
                 trigger: 'axis',
@@ -47,11 +54,11 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                 }
             },
             grid: {
-                right: '15%',
-                left: '12%',
-                top: '15%',
+                right: isMobile ? '8%' : '8%',
+                left: isMobile ? '8%' : '6%',
+                top: isMobile ? '25%' : '20%',
                 bottom: '15%',
-                backgroundColor: '#F5F7FA',
+                backgroundColor: 'transparent',
                 containLabel: true
             },
             legend: {
@@ -81,7 +88,17 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                         }
                     }
                 ],
-                top: 25
+                top: isMobile ? 30 : '8%',
+                left: 'center',
+                orient: 'horizontal',
+                itemGap: isMobile ? 20 : 30,
+                textStyle: {
+                    fontSize: isMobile ? 12 : 14,
+                    color: '#666565'
+                },
+                itemWidth: isMobile ? 15 : 20,
+                itemHeight: isMobile ? 10 : 12,
+                padding: [5, 10]
             },
             xAxis: {
                 type: 'category',
@@ -89,6 +106,22 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                 boundaryGap: true,
                 splitLine: {
                     show: false
+                },
+                axisLabel: {
+                    fontSize: isMobile ? 10 : 12,
+                    interval: function (index: number, value: string) {
+                        const monthInterval = isMobile ? 6 : 4;
+                        const date = new Date(value);
+                        const month = date.getMonth();
+                        if (month === 0) {
+                            return true;
+                        }
+                        return index % monthInterval === 0;
+                    },
+                    rotate: isMobile ? 45 : 30,
+                    formatter: function (value: string) {
+                        return value;
+                    }
                 }
             },
             yAxis: [
@@ -97,7 +130,13 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                     name: 'Rent ($)',
                     position: 'left',
                     axisLabel: {
-                        formatter: '${value}'
+                        formatter: '${value}',
+                        fontSize: isMobile ? 10 : 12,
+                        margin: isMobile ? 4 : 8
+                    },
+                    nameTextStyle: {
+                        fontSize: isMobile ? 10 : 12,
+                        padding: [0, 0, 0, 0]
                     },
                     splitLine: {
                         show: false
@@ -108,7 +147,13 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                     name: 'YoY Change (%)',
                     position: 'right',
                     axisLabel: {
-                        formatter: '{value}%'
+                        formatter: '{value}%',
+                        fontSize: isMobile ? 10 : 12,
+                        margin: isMobile ? 4 : 8
+                    },
+                    nameTextStyle: {
+                        fontSize: isMobile ? 10 : 12,
+                        padding: [0, 0, 0, 0]
                     },
                     splitLine: {
                         show: false
@@ -121,7 +166,11 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                     show: true,
                     xAxisIndex: [0],
                     start: 0,
-                    end: 100
+                    end: 100,
+                    height: isMobile ? 20 : 30,
+                    bottom: isMobile ? 5 : 10,
+                    left: isMobile ? '8%' : '6%',
+                    right: isMobile ? '8%' : '8%'
                 }
             ],
             series: [
@@ -163,14 +212,27 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
     };
 
     return (
-        <div style={{ marginBottom: '2rem' }}>
+        <Paper 
+            elevation={3} 
+            sx={{ 
+                p: isMobile ? '0.5rem 0.5rem' : 1,
+                mb: 4,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                width: '100%'
+            }}
+        >
             <ReactECharts
                 option={getOption()}
-                style={{ height: '400px' }}
+                style={{
+                    height: '400px',
+                    width: '100%'
+                }}
                 onEvents={{
                     dataZoom: onTimeRangeChange
                 }}
             />
-        </div>
+        </Paper>
     );
 }; 
