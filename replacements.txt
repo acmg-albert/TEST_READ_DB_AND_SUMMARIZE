@@ -1,0 +1,5 @@
+qjdvcnyxsnsfsdhxfxlm.supabase.co=***REMOVED***
+https://qjdvcnyxsnsfsdhxfxlm.supabase.co=***REMOVED***
+SUPABASE_URL=***REMOVED***
+SUPABASE_KEY=***REMOVED***
+API_KEY=***REMOVED*** 
