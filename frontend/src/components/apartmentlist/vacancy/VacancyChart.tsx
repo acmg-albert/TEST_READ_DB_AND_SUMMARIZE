@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTheme, useMediaQuery } from '@mui/material';
-import { TimeSeriesData } from '../../../types/apartmentlist/rent/types';
+import { TimeSeriesData } from '../../../types/apartmentlist/vacancy/types';
 
-interface RentChartProps {
+interface VacancyChartProps {
     title: string;
     timeSeriesData: TimeSeriesData;
-    rentType: 'overall' | '1br' | '2br';
 }
 
-export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, rentType }) => {
+export const VacancyChart: React.FC<VacancyChartProps> = ({ title, timeSeriesData }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [timeRange, setTimeRange] = useState<[number, number]>([0, timeSeriesData.dates.length - 1]);
@@ -19,8 +18,8 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
         const endIndex = timeRange[1];
         
         const dates = timeSeriesData.dates.slice(startIndex, endIndex + 1);
-        const rentValues = timeSeriesData[rentType].values.slice(startIndex, endIndex + 1);
-        const yoyChanges = timeSeriesData[rentType].yoy_changes.slice(startIndex, endIndex + 1);
+        const vacancyValues = timeSeriesData.vacancy_index.values.slice(startIndex, endIndex + 1).map(value => value * 100);
+        const yoyChanges = timeSeriesData.vacancy_index.yoy_changes.slice(startIndex, endIndex + 1).map(value => value / 100);
 
         return {
             title: {
@@ -39,7 +38,17 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                 axisPointer: {
                     type: 'cross',
                     label: {
-                        backgroundColor: '#666565'
+                        backgroundColor: '#666565',
+                        formatter: function(params: any) {
+                            if (params.axisDimension === 'y') {
+                                if (params.axisIndex === 0) {
+                                    return `${params.value.toFixed(2)}%`;
+                                } else {
+                                    return `${(params.value * 100).toFixed(2)}%`;
+                                }
+                            }
+                            return params.value;
+                        }
                     }
                 },
                 backgroundColor: 'rgba(50, 50, 50, 0.9)',
@@ -54,10 +63,10 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                         const marker = param.marker;
                         const seriesName = param.seriesName;
                         const value = param.value;
-                        if (seriesName === 'Rent') {
-                            result += `${marker}${seriesName}: $${value?.toLocaleString()}<br/>`;
+                        if (seriesName === 'Vacancy Rate') {
+                            result += `${marker}${seriesName}: ${value.toFixed(2)}%<br/>`;
                         } else if (seriesName === 'YoY Change') {
-                            result += `${marker}${seriesName}: ${value?.toFixed(2)}%<br/>`;
+                            result += `${marker}${seriesName}: ${(value * 100).toFixed(2)}%<br/>`;
                         }
                     });
                     return result;
@@ -65,7 +74,7 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
             },
             legend: {
                 data: [
-                    'Rent',
+                    'Vacancy Rate',
                     {
                         name: 'YoY Change',
                         icon: 'rect',
@@ -161,7 +170,7 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
             },
             yAxis: [{
                 type: 'value',
-                name: 'Rent ($)',
+                name: 'Vacancy Rate (%)',
                 position: 'left',
                 nameTextStyle: {
                     fontSize: isMobile ? 10 : 12,
@@ -170,12 +179,7 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                 axisLabel: {
                     fontSize: isMobile ? 10 : 12,
                     margin: isMobile ? 4 : 8,
-                    formatter: function (value: number) {
-                        if (isMobile) {
-                            return value >= 1000 ? `${Math.round(value/1000)}k` : value;
-                        }
-                        return `$${value}`;
-                    }
+                    formatter: '{value}%'
                 },
                 splitLine: {
                     show: false
@@ -192,7 +196,9 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                 axisLabel: {
                     fontSize: isMobile ? 10 : 12,
                     margin: isMobile ? 4 : 8,
-                    formatter: '{value}%'
+                    formatter: function(value: number) {
+                        return `${(value * 100).toFixed(1)}%`;
+                    }
                 },
                 splitLine: {
                     show: false
@@ -224,9 +230,9 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
                 }
             }],
             series: [{
-                name: 'Rent',
+                name: 'Vacancy Rate',
                 type: 'line',
-                data: rentValues,
+                data: vacancyValues,
                 yAxisIndex: 0,
                 symbol: 'circle',
                 symbolSize: 8,
@@ -291,4 +297,4 @@ export const RentChart: React.FC<RentChartProps> = ({ title, timeSeriesData, ren
             />
         </div>
     );
-};
+}; 
