@@ -4,7 +4,7 @@ Handles data aggregation and calculations for the API endpoints.
 """
 
 from typing import List, Dict, Any, Tuple
-from .database import DatabaseClient
+from backend.app.database import DatabaseClient
 
 # 初始化数据库客户端
 db = DatabaseClient()

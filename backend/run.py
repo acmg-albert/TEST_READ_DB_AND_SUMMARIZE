@@ -3,8 +3,12 @@ Server startup script.
 """
 
 import os
+import sys
 import uvicorn
 from dotenv import load_dotenv
+
+# Add the project root directory to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Load environment variables
 load_dotenv()
@@ -20,7 +24,7 @@ if __name__ == "__main__":
     
     # Run the server
     uvicorn.run(
-        "app.main:app",
+        "backend.app.main:app",
         host=host,
         port=port,
         reload=debug,
