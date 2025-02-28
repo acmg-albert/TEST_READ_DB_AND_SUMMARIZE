@@ -9,7 +9,6 @@ from typing import Dict, Any, List
 from fastapi import FastAPI, HTTPException, Path
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from backend.app import data_processor
 
 # Configure logging
 logging.basicConfig(
