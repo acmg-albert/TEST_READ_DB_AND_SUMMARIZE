@@ -62,7 +62,18 @@ class VacancyDBClient(BaseDBClient):
             return []
         
         # Get recent months data
-        latest_months = self.get_latest_months(3)
+        response = self.client.table(self.table_name)\
+            .select("year_month")\
+            .order("year_month", desc=True)\
+            .execute()
+            
+        if not response.data:
+            return []
+            
+        # Get unique months and sort them
+        all_months = sorted(list(set(item["year_month"] for item in response.data)), reverse=True)
+        latest_months = all_months[:3]  # Get the latest 3 unique months
+        
         year_ago_months = [
             f"{int(month.split('_')[0])-1}_{month.split('_')[1]}"
             for month in latest_months
@@ -133,7 +144,7 @@ class VacancyDBClient(BaseDBClient):
                 logger.error(f"Error processing location {location_name}: {str(e)}")
                 continue
         
-        return result
+        return sorted(result, key=lambda x: x.get("trailing_3m_yoy_change", float('-inf')), reverse=True)
 
     def get_location_time_series(
         self,
@@ -231,5 +242,6 @@ class VacancyDBClient(BaseDBClient):
         if not response.data:
             return []
             
-        return [{"location_name": item["location_name"], "location_type": normalized_type}
-                for item in response.data] 
+        # Get unique location names and sort them
+        unique_locations = sorted(list(set(item["location_name"] for item in response.data)))
+        return [{"location_name": name, "location_type": normalized_type} for name in unique_locations] 

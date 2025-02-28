@@ -61,10 +61,8 @@ class VacancyProcessor:
                 "trailing_3m_yoy_change": location["trailing_3m_yoy_change"],
                 "monthly_data": [
                     {
-                        "year_month": month["year_month"].replace("_", "-"),
-                        "vacancy_rate": month["vacancy_rate"],
-                        "year_ago_rate": month["year_ago_rate"],
-                        "yoy_change": month["yoy_change"]
+                        "date": month["year_month"],
+                        "vacancy_index": month["vacancy_rate"]
                     }
                     for month in monthly_data
                 ]
@@ -104,15 +102,25 @@ class VacancyProcessor:
             location_data = next((loc for loc in locations if loc["location_name"] == location_name), None)
             
             if location_data:
+                monthly_data = location_data.get("monthly_data", [])
                 return {
                     "location_type": location_type,
                     "location_name": location_name,
                     "trailing_3m_yoy_change": location_data.get("trailing_3m_yoy_change", 0),
                     "valid_months_count": location_data.get("valid_months_count", 0),
-                    "monthly_data": location_data.get("monthly_data", []),
+                    "monthly_data": [
+                        {
+                            "date": month["year_month"],
+                            "vacancy_index": month["vacancy_rate"]
+                        }
+                        for month in monthly_data
+                    ],
                     "time_series": {
                         "dates": [],
-                        "vacancy_rate": {"values": [], "yoy_changes": []}
+                        "vacancy_index": {
+                            "values": [],
+                            "yoy_changes": []
+                        }
                     }
                 }
             return {
@@ -122,7 +130,13 @@ class VacancyProcessor:
         return {
             "location_type": location_type,
             "location_name": location_name,
-            "time_series": time_series
+            "time_series": {
+                "dates": time_series["dates"],
+                "vacancy_index": {
+                    "values": time_series["vacancy_rate"]["values"],
+                    "yoy_changes": time_series["vacancy_rate"]["yoy_changes"]
+                }
+            }
         }
 
     def get_location_types(self) -> List[str]:
