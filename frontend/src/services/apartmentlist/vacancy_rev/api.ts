@@ -7,7 +7,7 @@ import {
     ErrorResponse
 } from '../../../types/apartmentlist/vacancy_rev/types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8001/api/vacancy-rev';
+const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:8001/api'}/vacancy-rev`;
 
 export const fetchVacancySummary = async (locationType: string): Promise<SummaryData> => {
     try {
