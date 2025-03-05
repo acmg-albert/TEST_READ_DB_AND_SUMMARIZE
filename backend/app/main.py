@@ -39,6 +39,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Import routers
+from .api.apartmentlist.vacancy_rev_routes import router as vacancy_rev_router
+
+# Include routers
+app.include_router(
+    vacancy_rev_router,
+    prefix="/api"
+)
+
 @app.exception_handler(Exception)
 async def global_exception_handler(request, exc):
     """Global exception handler for all unhandled exceptions."""

@@ -81,3 +81,35 @@
         * 使用年月格式（YYYY_MM）
         * 保持时间顺序
         * 正确计算同比变化率 
+
+7. 前端模块化结构规则
+   A. 目录结构要求：
+      - 所有模块都在 apartmentlist 目录下进行组织
+      - 每个功能模块（如 Apartments Rent, Apartments Vacancy）必须有独立的子目录
+      - 子目录名使用小写，如：rent, vacancy
+      - 目录结构分为四个主要部分：
+        * frontend/src/components/apartmentlist/[module]/
+        * frontend/src/pages/RentalMarket/apartmentlist/[module]/
+        * frontend/src/services/apartmentlist/[module]/
+        * frontend/src/types/apartmentlist/[module]/
+
+   B. 模块独立性要求：
+      - 每个模块必须完全独立，不依赖其他模块的脚本
+      - 每个模块拥有自己的组件、页面、服务和类型定义
+      - 不使用通用脚本，保持模块间的独立性
+      - 新模块开发必须遵循已有的目录结构和命名规范
+
+   C. 命名和语言规范：
+      - 所有显示的文本必须使用英文，禁止混入中文
+      - 组件命名必须清晰表明其所属模块
+      - 文件命名必须遵循模块前缀规则（如 RentChart, VacancyChart）
+
+   D. 模块组件结构：
+      - 每个模块必须包含其所需的所有独立组件
+      - 组件类型包括但不限于：
+        * Chart 组件
+        * DataTable 组件
+        * LocationSelector 组件
+        * 页面组件（Summary, Details）
+        * API 服务
+        * TypeScript 类型定义 
