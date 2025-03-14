@@ -8,9 +8,9 @@ const Header: React.FC = () => {
       <nav className="navbar navbar-expand-lg bg-white navbar-light py-0 px-4">
         <RouterLink to="/" className="navbar-brand d-flex align-items-center text-center">
           <div className="icon p-2 me-2">
-            <Image className="img-fluid" src="/img/my-logo.png" alt="My Logo" style={{ width: '30px', height: '30px' }} />
+            <Image className="img-fluid" src="/img/my-logo.png" alt="Real Analytics" style={{ width: '30px', height: '30px' }} />
           </div>
-          <h1 className="m-0 text-primary">My Logo</h1>
+          <h1 className="m-0 text-primary">Real Analytics</h1>
         </RouterLink>
         
         <button type="button" className="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
