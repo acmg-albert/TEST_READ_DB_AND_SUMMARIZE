@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { useTheme, useMediaQuery } from '@mui/material';
-import { TimeSeriesData } from '../../../types/apartmentlist/vacancy_rev/types';
+import { TimeSeriesData } from '../../../types/apartmentlist/rent_rev/types';
 
-interface VacancyChartProps {
+interface RentRevChartProps {
     title: string;
     timeSeriesData: TimeSeriesData;
+    rentType: 'rent_estimate' | 'rent_estimate_1br' | 'rent_estimate_2br';
 }
 
-export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeriesData }) => {
+export const RentRevChart: React.FC<RentRevChartProps> = ({ title, timeSeriesData, rentType }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const [timeRange, setTimeRange] = useState<[number, number]>([0, timeSeriesData.dates.length - 1]);
@@ -18,12 +19,10 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
         const endIndex = timeRange[1];
         
         const dates = timeSeriesData.dates.slice(startIndex, endIndex + 1);
-        const vacancyValues = timeSeriesData.vacancy_index.values
-            .slice(startIndex, endIndex + 1)
-            .map(value => value !== null && value !== undefined ? value * 100 : null);
-        const yoyChanges = timeSeriesData.vacancy_index.yoy_changes
-            .slice(startIndex, endIndex + 1)
-            .map((value, index) => vacancyValues[index] !== null ? value / 100 : null);
+        const rentValues = timeSeriesData[rentType].values.slice(startIndex, endIndex + 1)
+            .map(value => value && value > 0 ? value : null);
+        const yoyChanges = timeSeriesData[rentType].yoy_changes.slice(startIndex, endIndex + 1)
+            .map((value, index) => rentValues[index] ? value / 100 : null);
 
         return {
             title: {
@@ -46,12 +45,12 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
                         formatter: function(params: any) {
                             if (params.axisDimension === 'y') {
                                 if (params.axisIndex === 0) {
-                                    return `${params.value.toFixed(2)}%`;
+                                    return params.value === null || params.value === undefined ? '-' : `$${params.value.toFixed(0)}`;
                                 } else {
-                                    return `${(params.value * 100).toFixed(2)}%`;
+                                    return params.value === null || params.value === undefined ? '-' : `${(params.value * 100).toFixed(2)}%`;
                                 }
                             }
-                            return params.value;
+                            return params.value || '-';
                         }
                     }
                 },
@@ -74,8 +73,8 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
                         
                         if (value === null || value === undefined || (typeof value === 'number' && isNaN(value))) {
                             result += `${marker}${seriesName}: -<br/>`;
-                        } else if (seriesName === 'Vacancy Rate') {
-                            result += `${marker}${seriesName}: ${value.toFixed(2)}%<br/>`;
+                        } else if (seriesName === 'Rent Estimate') {
+                            result += `${marker}${seriesName}: $${value.toFixed(0)}<br/>`;
                         } else if (seriesName === 'YoY Change') {
                             result += `${marker}${seriesName}: ${(value * 100).toFixed(2)}%<br/>`;
                         }
@@ -85,7 +84,7 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
             },
             legend: {
                 data: [
-                    'Vacancy Rate',
+                    'Rent Estimate',
                     {
                         name: 'YoY Change',
                         icon: 'rect',
@@ -181,7 +180,7 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
             },
             yAxis: [{
                 type: 'value',
-                name: 'Vacancy Rate (%)',
+                name: 'Rent Estimate ($)',
                 position: 'left',
                 nameTextStyle: {
                     fontSize: isMobile ? 10 : 12,
@@ -190,7 +189,7 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
                 axisLabel: {
                     fontSize: isMobile ? 10 : 12,
                     margin: isMobile ? 4 : 8,
-                    formatter: '{value}%'
+                    formatter: '${value}'
                 },
                 splitLine: {
                     show: false
@@ -241,9 +240,9 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
                 }
             }],
             series: [{
-                name: 'Vacancy Rate',
+                name: 'Rent Estimate',
                 type: 'line',
-                data: vacancyValues,
+                data: rentValues,
                 yAxisIndex: 0,
                 symbol: 'circle',
                 symbolSize: 8,
@@ -309,6 +308,4 @@ export const VacancyRevChart: React.FC<VacancyChartProps> = ({ title, timeSeries
             />
         </div>
     );
-};
-
-export default VacancyRevChart; 
+}; 

@@ -1,6 +1,6 @@
 """
-Vacancy Rev database client module.
-Handles database operations for apartment vacancy rate data.
+Rent Rev database client module.
+Handles database operations for apartment rent estimates data.
 """
 
 import logging
@@ -10,15 +10,15 @@ from ..base import BaseDBClient
 # Configure logging
 logger = logging.getLogger(__name__)
 
-class VacancyRevDBClient(BaseDBClient):
-    """Database client for vacancy rate data."""
+class RentRevDBClient(BaseDBClient):
+    """Database client for rent estimates data."""
     
     def __init__(self):
         """Initialize database client."""
         super().__init__()
-        self.table_name = 'apartment_list_vacancy_index_view'
-        self.summary_table = 'apartment_list_vacancy_index_summary_view'
-        self.locations_table = 'apartment_list_vacancy_unique_locations_view'
+        self.table_name = 'apartment_list_rent_estimates_view'
+        self.summary_table = 'apartment_list_rent_estimates_summary_view'
+        self.locations_table = 'apartment_list_rent_estimates_unique_locations_view'
         
     def get_latest_months(self, count: int = 3) -> List[str]:
         """Get the latest months from the database in YYYY_MM format."""
@@ -45,7 +45,7 @@ class VacancyRevDBClient(BaseDBClient):
             
     def get_location_data(self, location_type: str) -> List[Dict[str, Any]]:
         """
-        Get vacancy data for locations of specified type.
+        Get rent data for locations of specified type.
         
         Args:
             location_type: Type of location (State, Metro, City)
@@ -114,55 +114,79 @@ class VacancyRevDBClient(BaseDBClient):
                 
             # 处理时间序列数据
             dates = []
-            values = []
-            yoy_changes = []
+            values = {'overall': [], '1br': [], '2br': []}
+            yoy_changes = {'overall': [], '1br': [], '2br': []}
             
             # 创建一个字典来存储每个年份的数据，用于计算同比变化
-            yearly_data = {}
+            yearly_data = {'overall': {}, '1br': {}, '2br': {}}
+            
             for row in response.data:
                 year_month = row['year_month']
                 year = int(year_month.split('_')[0])
                 month = int(year_month.split('_')[1])
-                vacancy_index = row.get('vacancy_index')
                 
-                if year not in yearly_data:
-                    yearly_data[year] = {}
-                yearly_data[year][month] = vacancy_index
+                # 处理每种租金类型的数据
+                rent_types = {
+                    'overall': 'rent_estimate_overall',
+                    '1br': 'rent_estimate_1br',
+                    '2br': 'rent_estimate_2br'
+                }
+                
+                for rent_type, column in rent_types.items():
+                    rent_value = row.get(column)
+                    if rent_value is not None:
+                        if year not in yearly_data[rent_type]:
+                            yearly_data[rent_type][year] = {}
+                        yearly_data[rent_type][year][month] = rent_value
             
             # 计算每个月的同比变化
             sorted_data = sorted(response.data, key=lambda x: x['year_month'])
             for row in sorted_data:
                 year_month = row['year_month']
-                dates.append(year_month)
-                
-                # 添加当前值（可以是 None）
-                vacancy_index = row.get('vacancy_index')
-                values.append(vacancy_index)
-                
-                # 计算同比变化
                 year = int(year_month.split('_')[0])
                 month = int(year_month.split('_')[1])
-                prev_year = year - 1
                 
-                if (vacancy_index is not None and 
-                    prev_year in yearly_data and 
-                    month in yearly_data[prev_year] and 
-                    yearly_data[prev_year][month] is not None and 
-                    yearly_data[prev_year][month] != 0):
-                    prev_value = yearly_data[prev_year][month]
-                    yoy_change = ((vacancy_index - prev_value) / prev_value) * 100
-                else:
-                    yoy_change = None
+                # 只在处理第一种租金类型时添加日期
+                dates.append(year_month)
                 
-                yoy_changes.append(yoy_change)
+                # 处理每种租金类型的数据
+                for rent_type, column in rent_types.items():
+                    rent_value = row.get(column)
+                    if rent_value is not None:
+                        values[rent_type].append(rent_value)
+                        
+                        # 计算同比变化
+                        prev_year = year - 1
+                        if (prev_year in yearly_data[rent_type] and 
+                            month in yearly_data[rent_type][prev_year]):
+                            prev_value = yearly_data[rent_type][prev_year][month]
+                            if prev_value != 0:  # 避免除以0
+                                yoy_change = ((rent_value - prev_value) / prev_value) * 100
+                            else:
+                                yoy_change = 0
+                        else:
+                            yoy_change = 0
+                        
+                        yoy_changes[rent_type].append(yoy_change)
+                    else:
+                        values[rent_type].append(None)
+                        yoy_changes[rent_type].append(None)
             
             logger.info(f"Processed {len(dates)} data points for {location_type} {location_name}")
             
             return {
                 'dates': dates,
-                'vacancy_index': {
-                    'values': values,
-                    'yoy_changes': yoy_changes
+                'rent_estimate': {
+                    'values': values['overall'],
+                    'yoy_changes': yoy_changes['overall']
+                },
+                'rent_estimate_1br': {
+                    'values': values['1br'],
+                    'yoy_changes': yoy_changes['1br']
+                },
+                'rent_estimate_2br': {
+                    'values': values['2br'],
+                    'yoy_changes': yoy_changes['2br']
                 }
             }
             
@@ -202,15 +226,9 @@ class VacancyRevDBClient(BaseDBClient):
             List of location types
         """
         try:
-            response = self.client.table(self.locations_table)\
-                .select('location_type')\
-                .execute()
-                
-            if response.data:
-                # Get unique location types
-                types = set(item['location_type'] for item in response.data)
-                return sorted(list(types))
-            return []
+            # 直接返回所有支持的location types
+            location_types = ["National", "State", "Metro", "City", "County"]
+            return location_types
             
         except Exception as e:
             logger.error(f"Error getting location types: {str(e)}")

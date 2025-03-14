@@ -23,13 +23,7 @@ app = FastAPI(
 )
 
 # Configure CORS
-origins = [
-    "http://localhost:3000",  # 本地开发
-    "http://127.0.0.1:3000",  # 本地开发(使用IP)
-    "http://192.168.4.26:3000",  # 本地IP访问
-    "https://test-read-db-and-summarize.vercel.app",  # Vercel前端域名
-    "https://test-read-db-and-summarize-backend.onrender.com",  # Render后端域名
-]
+origins = ["*"]  # 临时允许所有源访问，用于测试
 
 app.add_middleware(
     CORSMiddleware,
@@ -41,10 +35,15 @@ app.add_middleware(
 
 # Import routers
 from .api.apartmentlist.vacancy_rev_routes import router as vacancy_rev_router
+from .api.apartmentlist.rent_rev_routes import router as rent_rev_router
 
 # Include routers
 app.include_router(
     vacancy_rev_router,
+    prefix="/api"
+)
+app.include_router(
+    rent_rev_router,
     prefix="/api"
 )
 

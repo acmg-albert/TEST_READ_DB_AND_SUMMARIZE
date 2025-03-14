@@ -78,7 +78,7 @@ export const VacancySummary: React.FC = () => {
                         }
                     }}
                 >
-                    View Detailed Trends
+                    View Details by Location
                 </Button>
             </Box>
 
@@ -93,30 +93,30 @@ export const VacancySummary: React.FC = () => {
 
             {summaryData.State && (
                 <VacancyRevDataTable
-                    title="State Level Vacancy Rates"
+                    title="States with Largest and Smallest Vacancy Changes"
                     category="States"
-                    topLocations={summaryData.State.data.top.slice(0, 3)}
-                    bottomLocations={summaryData.State.data.bottom.slice(0, 3)}
+                    topLocations={summaryData.State.data.top}
+                    bottomLocations={summaryData.State.data.bottom}
                     locationType="State"
                 />
             )}
 
             {summaryData.Metro && (
                 <VacancyRevDataTable
-                    title="Metro Level Vacancy Rates"
+                    title="Metro Areas with Largest and Smallest Vacancy Changes"
                     category="Metros"
-                    topLocations={summaryData.Metro.data.top.slice(0, 10)}
-                    bottomLocations={summaryData.Metro.data.bottom.slice(0, 10)}
+                    topLocations={summaryData.Metro.data.top}
+                    bottomLocations={summaryData.Metro.data.bottom}
                     locationType="Metro"
                 />
             )}
 
             {summaryData.City && (
                 <VacancyRevDataTable
-                    title="City Level Vacancy Rates"
+                    title="Cities with Largest and Smallest Vacancy Changes"
                     category="Cities"
-                    topLocations={summaryData.City.data.top.slice(0, 10)}
-                    bottomLocations={summaryData.City.data.bottom.slice(0, 10)}
+                    topLocations={summaryData.City.data.top}
+                    bottomLocations={summaryData.City.data.bottom}
                     locationType="City"
                 />
             )}

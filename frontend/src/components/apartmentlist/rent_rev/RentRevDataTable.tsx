@@ -1,20 +1,20 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
-    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
+    Paper,
     Typography,
-    Box,
-    Link
+    Link,
+    Box
 } from '@mui/material';
-import { LocationData } from '../../../types/apartmentlist/vacancy_rev/types';
+import { useNavigate } from 'react-router-dom';
+import { LocationData } from '../../../types/apartmentlist/rent_rev/types';
 
-interface VacancyRevDataTableProps {
+interface RentRevDataTableProps {
     title: string;
     category: string;
     topLocations: LocationData[];
@@ -22,7 +22,7 @@ interface VacancyRevDataTableProps {
     locationType: string;
 }
 
-const VacancyRevDataTable: React.FC<VacancyRevDataTableProps> = ({
+const RentRevDataTable: React.FC<RentRevDataTableProps> = ({
     title,
     category,
     topLocations = [],
@@ -32,24 +32,22 @@ const VacancyRevDataTable: React.FC<VacancyRevDataTableProps> = ({
     const navigate = useNavigate();
 
     const handleLocationClick = (location: LocationData) => {
-        navigate(`/rental/apartments-vacancy-rev/details/${location.location_type}/${encodeURIComponent(location.location_name)}`);
+        navigate(`/rental/apartments-rent-rev/details/${locationType}/${location.location_name}`);
     };
 
     const formatPercent = (value: number | undefined) => {
-        if (value === undefined) return 'N/A';
-        return `${value.toFixed(2)}%`;
+        if (typeof value !== 'number') return 'N/A';
+        return `${value.toFixed(1)}%`;
     };
 
-    const formatVacancyRate = (value: number | undefined) => {
-        if (value === undefined) return 'N/A';
-        return `${value.toFixed(2)}%`;
+    const formatRent = (value: number | undefined) => {
+        if (typeof value !== 'number') return 'N/A';
+        return `$${value.toLocaleString()}`;
     };
 
     const renderLocationRows = (locations: LocationData[]) => {
         return locations.map((location, index) => (
-            <TableRow
-                key={`${location.location_name}-${index}`}
-            >
+            <TableRow key={`${location.location_name}-${index}`}>
                 <TableCell>
                     <Link
                         component="button"
@@ -60,9 +58,9 @@ const VacancyRevDataTable: React.FC<VacancyRevDataTableProps> = ({
                         {location.location_name}
                     </Link>
                 </TableCell>
-                <TableCell align="right">{formatVacancyRate(location.month1_vacancy)}</TableCell>
-                <TableCell align="right">{formatVacancyRate(location.month2_vacancy)}</TableCell>
-                <TableCell align="right">{formatVacancyRate(location.month3_vacancy)}</TableCell>
+                <TableCell align="right">{formatRent(location.month1_rent_estimate)}</TableCell>
+                <TableCell align="right">{formatRent(location.month2_rent_estimate)}</TableCell>
+                <TableCell align="right">{formatRent(location.month3_rent_estimate)}</TableCell>
                 <TableCell align="right">{formatPercent(location.yoy_change)}</TableCell>
             </TableRow>
         ));
@@ -79,13 +77,13 @@ const VacancyRevDataTable: React.FC<VacancyRevDataTableProps> = ({
                         <TableRow>
                             <TableCell>Location</TableCell>
                             <TableCell align="right">
-                                {topLocations[0]?.month1_year_month?.replace('_', '-') || 'Month 1'} Vacancy
+                                {topLocations[0]?.month1_year_month?.replace('_', '-') || 'Month 1'} Rent
                             </TableCell>
                             <TableCell align="right">
-                                {topLocations[0]?.month2_year_month?.replace('_', '-') || 'Month 2'} Vacancy
+                                {topLocations[0]?.month2_year_month?.replace('_', '-') || 'Month 2'} Rent
                             </TableCell>
                             <TableCell align="right">
-                                {topLocations[0]?.month3_year_month?.replace('_', '-') || 'Month 3'} Vacancy
+                                {topLocations[0]?.month3_year_month?.replace('_', '-') || 'Month 3'} Rent
                             </TableCell>
                             <TableCell align="right">YoY Change</TableCell>
                         </TableRow>
@@ -114,4 +112,4 @@ const VacancyRevDataTable: React.FC<VacancyRevDataTableProps> = ({
     );
 };
 
-export default VacancyRevDataTable; 
+export default RentRevDataTable; 
