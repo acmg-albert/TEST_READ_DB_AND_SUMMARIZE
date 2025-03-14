@@ -86,7 +86,10 @@
    A. 目录结构要求：
       - 所有模块都在 apartmentlist 目录下进行组织
       - 每个功能模块（如 Apartments Rent, Apartments Vacancy）必须有独立的子目录
-      - 子目录名使用小写，如：rent, vacancy
+      - 子目录名使用小写，如：rent_rev, vacancy_rev
+      - 导航栏中的"Apartments Rent"对应 rent_rev 目录
+      - 导航栏中的"Apartments Vacancy"对应 vacancy_rev 目录
+      - rent 和 vacancy 目录为旧版本，已废弃不用
       - 目录结构分为四个主要部分：
         * frontend/src/components/apartmentlist/[module]/
         * frontend/src/pages/RentalMarket/apartmentlist/[module]/

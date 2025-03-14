@@ -4,22 +4,23 @@ import {
     LocationDetail,
     LocationTypesResponse,
     LocationsResponse,
-    ErrorResponse
-} from '../../../types/apartmentlist/vacancy_rev/types';
+    ErrorResponse,
+    RentSummaryResponse
+} from '../../../types/apartmentlist/rent_rev/types';
 
-const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://192.168.4.26:8001/api'}/vacancy-rev`;
+const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://192.168.4.26:8001/api'}/rent-rev`;
 
-export const fetchVacancySummary = async (locationType: string): Promise<SummaryData> => {
+export const fetchRentSummary = async (locationType: string): Promise<RentSummaryResponse> => {
     try {
         const response = await axios.get(`${API_BASE_URL}/summary/${locationType}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching vacancy summary:', error);
+        console.error('Error fetching rent summary:', error);
         throw error;
     }
 };
 
-export const fetchVacancyDetails = async (
+export const fetchRentDetails = async (
     locationType: string,
     locationName: string
 ): Promise<LocationDetail> => {
@@ -29,7 +30,7 @@ export const fetchVacancyDetails = async (
         const response = await axios.get(`${API_BASE_URL}/details/${encodedLocationType}/${encodedLocationName}`);
         return response.data;
     } catch (error) {
-        console.error('Error fetching vacancy details:', error);
+        console.error('Error fetching rent details:', error);
         throw error;
     }
 };

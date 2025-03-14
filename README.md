@@ -2,6 +2,14 @@
 
 A web application for displaying real estate rent analytics data.
 
+## Code Structure Note
+
+In the navigation menu:
+- "Apartments Rent" links to the optimized rent analytics module (located in `rent_rev` directories)
+- "Apartments Vacancy" links to the optimized vacancy analytics module (located in `vacancy_rev` directories)
+
+Note: The `rent` and `vacancy` directories in both frontend and backend are deprecated and not in use.
+
 ## Environment Setup
 
 1. Clone the repository

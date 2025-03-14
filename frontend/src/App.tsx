@@ -15,6 +15,8 @@ import { LocationDetailPage as RentDetail } from './pages/RentalMarket/RentDetai
 // 导入空置率页面
 import { VacancySummary, VacancyDetails } from './pages/RentalMarket/apartmentlist/vacancy';
 import { VacancySummary as VacancyRevSummary, VacancyDetails as VacancyRevDetails } from './pages/RentalMarket/apartmentlist/vacancy_rev';
+// 导入租金估算页面
+import { RentRevSummary, RentRevDetails } from './pages/RentalMarket/apartmentlist/rent_rev';
 
 // 创建 MUI 主题
 const muiTheme = createTheme({
@@ -158,6 +160,10 @@ function App() {
                 {/* 空置率优化版页面 */}
                 <Route path="/rental/apartments-vacancy-rev" element={<VacancyRevSummary />} />
                 <Route path="/rental/apartments-vacancy-rev/details/:locationType/:locationName" element={<VacancyRevDetails />} />
+                
+                {/* 租金估算页面 */}
+                <Route path="/rental/apartments-rent-rev" element={<RentRevSummary />} />
+                <Route path="/rental/apartments-rent-rev/details/:locationType/:locationName" element={<RentRevDetails />} />
                 
                 {/* 其他页面 - 待开发 */}
                 <Route path="/rental/time-on-market" element={<UnderConstruction />} />

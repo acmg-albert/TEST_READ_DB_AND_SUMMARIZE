@@ -31,9 +31,8 @@ const Header: React.FC = () => {
             <div className="nav-item dropdown">
               <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">RENTAL MARKET</a>
               <div className="dropdown-menu rounded-0 m-0">
-                <RouterLink to="/rental/apartments-rent" className="dropdown-item">Apartments Rent</RouterLink>
-                <RouterLink to="/rental/apartments-vacancy" className="dropdown-item">Apartments Vacancy</RouterLink>
-                <RouterLink to="/rental/apartments-vacancy-rev" className="dropdown-item">Apartments Vacancy Rev</RouterLink>
+                <RouterLink to="/rental/apartments-rent-rev" className="dropdown-item">Apartments Rent</RouterLink>
+                <RouterLink to="/rental/apartments-vacancy-rev" className="dropdown-item">Apartments Vacancy</RouterLink>
                 <RouterLink to="/rental/time-on-market" className="dropdown-item">Apartments Time on Market</RouterLink>
               </div>
             </div>
