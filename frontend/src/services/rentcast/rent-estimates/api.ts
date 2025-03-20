@@ -1,14 +1,15 @@
 import axios, { AxiosInstance } from 'axios';
 import { SearchFormData, RentCompsResponse } from '../../../types/rentcast/rent-estimates/types';
+import { API_BASE_URL } from '../../../config';
 
-const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://localhost:8001/api'}/rentcast`;
+const API_ENDPOINT = `${API_BASE_URL}/rentcast`;
 
 export class RentEstimatesService {
     private readonly axiosInstance: AxiosInstance;
 
     constructor() {
         this.axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
+            baseURL: API_ENDPOINT,
             headers: {
                 'Content-Type': 'application/json'
             }
