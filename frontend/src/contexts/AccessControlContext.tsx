@@ -22,35 +22,17 @@ export const AccessControlProvider: React.FC<{ children: React.ReactNode }> = ({
 
         // Verify access code using environment variable
         const validCode = process.env.REACT_APP_ACCESS_CODE;
-        console.log('Debug - Environment variables:', {
-            REACT_APP_ACCESS_CODE: process.env.REACT_APP_ACCESS_CODE,
-            REACT_APP_API_URL: process.env.REACT_APP_API_URL,
-            nodeEnv: process.env.NODE_ENV
-        });
         
-        // Development fallback
-        if (process.env.NODE_ENV === 'development' && !validCode) {
-            try {
-                const response = await fetch('/devAccessCode.txt');
-                const fileCode = await response.text();
-                const isValid = code.trim() === fileCode.trim();
-                
-                setAccessStates(prev => ({
-                    ...prev,
-                    [pageId]: {
-                        isAuthenticated: isValid,
-                        failedAttempts: isValid ? 0 : (currentState.failedAttempts + 1),
-                        lastAttemptTime: isValid ? undefined : Date.now()
-                    } as AccessCodeConfig
-                }));
-                
-                return isValid;
-            } catch (error) {
-                console.error('Error reading access code file:', error);
-                return false;
-            }
+        // For debugging purposes in development
+        if (process.env.NODE_ENV === 'development') {
+            console.log('Debug - Environment variables:', {
+                REACT_APP_ACCESS_CODE: process.env.REACT_APP_ACCESS_CODE,
+                REACT_APP_API_URL: process.env.REACT_APP_API_URL,
+                nodeEnv: process.env.NODE_ENV
+            });
         }
 
+        // Verify the code
         const isValid = Boolean(validCode && code.trim() === validCode.trim());
 
         setAccessStates(prev => ({
