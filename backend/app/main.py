@@ -37,6 +37,7 @@ app.add_middleware(
 from .api.apartmentlist.vacancy_rev_routes import router as vacancy_rev_router
 from .api.apartmentlist.rent_rev_routes import router as rent_rev_router
 from .api.apartmentlist.time_on_market_routes import router as time_on_market_router
+from .api.rentcast.rent_estimates.routes import router as rent_estimates_router
 
 # Include routers
 app.include_router(
@@ -50,6 +51,10 @@ app.include_router(
 app.include_router(
     time_on_market_router,
     prefix="/api"
+)
+app.include_router(
+    rent_estimates_router,
+    prefix="/api/rentcast"
 )
 
 @app.exception_handler(Exception)
