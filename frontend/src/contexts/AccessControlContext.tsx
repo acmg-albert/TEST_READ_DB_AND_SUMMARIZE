@@ -32,8 +32,23 @@ export const AccessControlProvider: React.FC<{ children: React.ReactNode }> = ({
             });
         }
 
-        // Verify the code
-        const isValid = Boolean(validCode && code.trim() === validCode.trim());
+        let isValid = false;
+
+        // First try environment variable
+        if (validCode) {
+            isValid = code.trim() === validCode.trim();
+        } 
+        // If in development and no environment variable, try devAccessCode.txt
+        else if (process.env.NODE_ENV === 'development') {
+            try {
+                const response = await fetch('/devAccessCode.txt');
+                const fileCode = await response.text();
+                isValid = code.trim() === fileCode.trim();
+            } catch (error) {
+                console.error('Error reading access code file:', error);
+                isValid = false;
+            }
+        }
 
         setAccessStates(prev => ({
             ...prev,
