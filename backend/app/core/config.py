@@ -2,6 +2,7 @@
 Application configuration module.
 """
 
+import os
 from pydantic_settings import BaseSettings
 from typing import Optional, List
 from pydantic import model_validator
@@ -12,7 +13,7 @@ class Settings(BaseSettings):
     # API Configuration
     API_V1_STR: str = "/api"
     API_HOST: str = "0.0.0.0"
-    API_PORT: int = 8001
+    API_PORT: int = int(os.environ.get("PORT", 8001))  # 使用 Render 提供的 PORT 或默认值
     DEBUG: bool = False  # 生产环境默认关闭调试模式
     
     # RentCast API
