@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../../config';
 import {
     LocationTypesResponse,
     LocationsResponse,
@@ -8,12 +7,12 @@ import {
     ErrorResponse
 } from '../../../types/apartmentlist/time_on_market/types';
 
-const TIME_ON_MARKET_API = `${API_BASE_URL}/time-on-market`;
+const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://192.168.4.26:8001/api'}/time-on-market`;
 
 export const getLocationTypes = async (): Promise<string[]> => {
     try {
         const response = await axios.get<LocationTypesResponse>(
-            `${TIME_ON_MARKET_API}/location-types`
+            `${API_BASE_URL}/location-types`
         );
         return response.data.data;
     } catch (error) {
@@ -27,7 +26,7 @@ export const getLocations = async (
 ): Promise<string[]> => {
     try {
         const response = await axios.get<LocationsResponse>(
-            `${TIME_ON_MARKET_API}/locations/${locationType}`
+            `${API_BASE_URL}/locations/${locationType}`
         );
         return response.data.data.map(location => location.location_name);
     } catch (error) {
@@ -41,7 +40,7 @@ export const getTimeOnMarketSummary = async (
 ): Promise<SummaryData> => {
     try {
         const response = await axios.get<SummaryData>(
-            `${TIME_ON_MARKET_API}/summary/${locationType}`
+            `${API_BASE_URL}/summary/${locationType}`
         );
         return response.data;
     } catch (error) {
@@ -56,7 +55,7 @@ export const getTimeOnMarketDetails = async (
 ): Promise<LocationDetail> => {
     try {
         const response = await axios.get<LocationDetail>(
-            `${TIME_ON_MARKET_API}/details/${locationType}/${locationName}`
+            `${API_BASE_URL}/details/${locationType}/${locationName}`
         );
         return response.data;
     } catch (error) {
