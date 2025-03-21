@@ -6,13 +6,12 @@ import {
     LocationsResponse,
     ErrorResponse
 } from '../../../types/apartmentlist/vacancy_rev/types';
-import { API_BASE_URL } from '../../../config';
 
-const API_ENDPOINT = `${API_BASE_URL}/vacancy-rev`;
+const API_BASE_URL = `${process.env.REACT_APP_API_URL || 'http://192.168.4.26:8001/api'}/vacancy-rev`;
 
 export const fetchVacancySummary = async (locationType: string): Promise<SummaryData> => {
     try {
-        const response = await axios.get(`${API_ENDPOINT}/summary/${locationType}`);
+        const response = await axios.get(`${API_BASE_URL}/summary/${locationType}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching vacancy summary:', error);
@@ -27,7 +26,7 @@ export const fetchVacancyDetails = async (
     try {
         const encodedLocationType = encodeURIComponent(locationType);
         const encodedLocationName = encodeURIComponent(locationName);
-        const response = await axios.get(`${API_ENDPOINT}/details/${encodedLocationType}/${encodedLocationName}`);
+        const response = await axios.get(`${API_BASE_URL}/details/${encodedLocationType}/${encodedLocationName}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching vacancy details:', error);
@@ -37,7 +36,7 @@ export const fetchVacancyDetails = async (
 
 export const fetchLocationTypes = async (): Promise<LocationTypesResponse> => {
     try {
-        const response = await axios.get(`${API_ENDPOINT}/location-types`);
+        const response = await axios.get(`${API_BASE_URL}/location-types`);
         return response.data;
     } catch (error) {
         console.error('Error fetching location types:', error);
@@ -47,7 +46,7 @@ export const fetchLocationTypes = async (): Promise<LocationTypesResponse> => {
 
 export const fetchLocations = async (locationType: string): Promise<LocationsResponse> => {
     try {
-        const response = await axios.get(`${API_ENDPOINT}/locations/${locationType}`);
+        const response = await axios.get(`${API_BASE_URL}/locations/${locationType}`);
         return response.data;
     } catch (error) {
         console.error('Error fetching locations:', error);
