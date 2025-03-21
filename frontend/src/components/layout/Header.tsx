@@ -44,7 +44,13 @@ const Header: React.FC = () => {
               </div>
             </div>
             
-            <RouterLink to="#" className="nav-item nav-link">NEW CONSTRUCTIONS</RouterLink>
+            <div className="nav-item dropdown">
+              <a href="#" className="nav-link dropdown-toggle" data-bs-toggle="dropdown">UW COPILOT</a>
+              <div className="dropdown-menu rounded-0 m-0">
+                <RouterLink to="/uw-copilot/rent-trend-comps" className="dropdown-item">Rent Trend and Comps</RouterLink>
+              </div>
+            </div>
+            
             <RouterLink to="#" className="nav-item nav-link">ABOUT US</RouterLink>
           </div>
           
